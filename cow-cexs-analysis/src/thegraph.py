@@ -13,7 +13,15 @@ from queryportal.subgraphinterface import SubgraphInterface
 
 def get_trades_from_graph(subgraph_link: str):
 
+    # Extract name of subgraph from link. (Last word)
+    name = subgraph_link.split('/')[-1]
+    print('name is name: ', name)
+
     sgi = SubgraphInterface(endpoints=[subgraph_link])
+
+    # Extract name of subgraph from link. (Last word)
+    name = subgraph_link.split('/')[-1]
+    print('name is name')
 
     # Query Params
     current_timestamp = int(time.time())
@@ -63,8 +71,6 @@ def get_trades_from_graph(subgraph_link: str):
         return None 
 
 
-
-
     # Replace empty '' in the buyToken_symbol column with ETH if the buyToken_id == 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
 
     if subgraph_link == "https://api.thegraph.com/subgraphs/name/cowprotocol/cow":
@@ -110,4 +116,4 @@ def get_trades_from_graph(subgraph_link: str):
     return trades_df
 
 
-#get_trades_from_graph("https://api.thegraph.com/subgraphs/name/cowprotocol/cow-gc")
+get_trades_from_graph("https://api.thegraph.com/subgraphs/name/cowprotocol/cow-gc")

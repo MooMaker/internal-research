@@ -34,14 +34,14 @@ while(True):
 		cow_gnosis_df = binance_prices(cow_gnosis_df)
 		# Write mainnet dataframe into data store: 
 		if not os.path.isfile('mainnet_cow_binance_data.csv'):
-			cow_mainnet_df.to_csv('mainnet_cow_binance_data.csv', mode='w', header=True, index=False)
+			cow_gnosis_df.to_csv('gnosis_cow_binance_data.csv', mode='w', header=True, index=False)
 		else:
-			cow_mainnet_df.to_csv('mainnet_cow_binance_data.csv', mode='a', header=False, index=False)
+			cow_gnosis_df.to_csv('gnosis_cow_binance_data.csv', mode='a', header=False, index=False)
 
-		mainnet_matching_trades = mainnet_matching_trades + len(cow_mainnet_df)
+		gnosis_matching_trades = gnosis_matching_trades + len(cow_gnosis_df)
 
 	elif cow_gnosis_df == None:
-		print('No trades in the last 15mins')
+		print('No CoW Gnosis Chain trades in the last 15mins')
 		
 	'''
 
@@ -72,7 +72,7 @@ while(True):
 	mainnet_matching_trades = mainnet_matching_trades + len(cow_mainnet_df)
 
 	'''
-
+	#To do : return the right required data
 	# macro data for this run
 	print('total cow trades so far: ', len(trades_analyzed))
 	print('total number of matching trades appended to data: ', mainnet_matching_trades)
