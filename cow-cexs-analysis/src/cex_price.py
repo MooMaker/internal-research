@@ -135,10 +135,14 @@ def binance_prices(input_df):
 	            # Use the pair_price_binance function to calculate the binance price and store it in the dataframe.
 	            input_df.iloc[i, 17], input_df.iloc[i,18] = row_binance(sell_token_symbol, buy_token_symbol, timestamp, sell_token_qty, buy_token_qty)
 	            trades_analyzed.add(trade_id)
+	            print('i,17: ', input_df.iloc[i,17])
+	            print('i,18: ', input_df.iloc[i,18])
+
  
 	    else:
 	        input_df.iloc[i,17] = 'timeout'
 	        input_df.iloc[i,18] = 'timeout'
+
 	    
 
 	# Filter out trades that do not have a symbol in the subgraph
@@ -168,6 +172,8 @@ def binance_prices(input_df):
 	# an example is LIT which is Litentry on Binance but Timeless on COW. Unfortunately binance api does not allow
 	# one to validate by token address only by string symbol. Its not perfect way to do it but at least filters the obvious ones out
 	input_df = input_df[abs(input_df['percentage_diff']) < 100]
+
+	print('input_df', input_df)
 
 	print('adding binance prices to table complete')
 

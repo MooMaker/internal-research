@@ -42,8 +42,8 @@ def binance_vwap_estimator(symbol, qty):
     r_vwap = requests.get(url_vwap)
     data_vwap = r_vwap.json()
 
-    if len(data_vwap["bids"]) != len(data_vwap["asks"]):
-        return "value_error"
+    #if len(data_vwap["bids"]) != len(data_vwap["asks"]):
+    #    return "value_error"
 
     bids_data = data_vwap["bids"]
     asks_data = data_vwap["asks"]
@@ -131,7 +131,7 @@ def query_binance(symbol: str, timestamp: int, qty: float, is_buy: bool):
     # adjust price by vwap estimate
     print("qty", qty)
     ob = binance_vwap_estimator(symbol, qty)
-    print("ob", ob)
+    
     if ob != "value_error":
         if is_buy:
             price_adjust = ob[3]
@@ -158,6 +158,9 @@ def query_binance(symbol: str, timestamp: int, qty: float, is_buy: bool):
     return price_final, price_final_max, price_final_min
 
 
+
+'''
+
 # Call the function with your desired symbol and qty
 symbol = "BTCUSDT"
 qty = 100
@@ -178,3 +181,5 @@ query_binance(symbol, timestamp, 100, False)
 
 # bid_price = vwap_one_side(bids, 10)
 # print('bid_price', bid_price)
+
+'''

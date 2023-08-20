@@ -47,12 +47,13 @@ def get_price_at_qty(symbol, qty):
     return bids_df, asks_df
 
 
+'''
 # Call the function with your desired symbol and qty
 symbol = "BTCUSDT"
 qty = 10
 result = get_price_at_qty(symbol, qty)
 print("Calculated Price:", result)
-
+'''
 
 def percentage_diff(col1, col2):
     """

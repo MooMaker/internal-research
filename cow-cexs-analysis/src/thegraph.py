@@ -14,14 +14,13 @@ from queryportal.subgraphinterface import SubgraphInterface
 def get_trades_from_graph(subgraph_link: str):
 
     # Extract name of subgraph from link. (Last word)
-    name = subgraph_link.split('/')[-1]
-    print('name is name: ', name)
+    subgraph_name = subgraph_link.split('/')[-1]
+    
 
     sgi = SubgraphInterface(endpoints=[subgraph_link])
 
     # Extract name of subgraph from link. (Last word)
     name = subgraph_link.split('/')[-1]
-    print('name is name')
 
     # Query Params
     current_timestamp = int(time.time())
@@ -58,20 +57,22 @@ def get_trades_from_graph(subgraph_link: str):
     trades_df = sgi.query_entity(
         query_size=query_size,
         entity="trades",
-        name="cow",
+        name=f"{subgraph_name}",
         filter_dict=filter,
         query_paths=query_paths,
         orderBy="timestamp",
         graphql_query_fmt=True,
     )
 
+    print('test', type(trades_df))
 
-    if trades_df.shape[0] == 0:
+    if type(trades_df) == type(None): 
         print("No trades found. Exiting get_trades_from_graph function.")
-        return None 
+        return pl.DataFrame({})
 
 
-    # Replace empty '' in the buyToken_symbol column with ETH if the buyToken_id == 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+    #elif type(trades_df) == pl.DataFrame:
+    #    print('polars')
 
     if subgraph_link == "https://api.thegraph.com/subgraphs/name/cowprotocol/cow":
         trades_df = trades_df.with_columns(
@@ -111,9 +112,9 @@ def get_trades_from_graph(subgraph_link: str):
         ]
     )
 
-    trades_df.write_csv("raw_data.csv")
+    #trades_df.write_csv("raw_data.csv")
     print("fetch trades from the graph complete")
     return trades_df
 
 
-get_trades_from_graph("https://api.thegraph.com/subgraphs/name/cowprotocol/cow-gc")
+#get_trades_from_graph("https://api.thegraph.com/subgraphs/name/cowprotocol/cow-gc")
