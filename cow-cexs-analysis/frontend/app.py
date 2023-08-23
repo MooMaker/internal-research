@@ -42,13 +42,15 @@ def run_app():
 
 	# Call the function to get the latest data
 	mainnet_latest_data = get_latest_data('../data/mainnet_cow_binance_data.csv')
-	#gnosis_latest_data = get_latest_data('../data/gnosis_cow_binance_data.csv')
+	gnosis_latest_data = get_latest_data('../data/gnosis_cow_binance_data.csv')
 
 
-		### Mainnet stuff 
 
+	### Mainnet stuff 
+
+	st.write('Mainnet:')
 	# Display the table with the latest data
-	st.table(mainnet_latest_data[['timestamp', 'timestampx','txHash', 'sellToken_symbol', 'buyToken_symbol','cow_price', 'binance_price', 'percentage_diff']])
+	st.table(mainnet_latest_data[['timestamp', 'timestampx','txHash', 'sellToken_symbol', 'buyToken_symbol','cow_price_no_fee', 'binance_price', 'percentage_diff', 'worst_binance_price', 'percentage_diff_worst']])
 	
 	# Create the chart with the percentage difference
 	chart_data = mainnet_latest_data[['timestamp', 'percentage_diff']]   
@@ -84,8 +86,10 @@ def run_app():
 
 	### Gnosis stuff 
 
+	st.write('Gnosis Chain:')
+
 	# Display the table with the latest data
-	st.table(gnosis_latest_data[['timestamp', 'timestampx','txHash', 'sellToken_symbol', 'buyToken_symbol','cow_price', 'binance_price', 'percentage_diff']])
+	st.table(gnosis_latest_data[['timestamp', 'timestampx','txHash', 'sellToken_symbol', 'buyToken_symbol','cow_price_no_fee', 'binance_price', 'percentage_diff', 'worst_binance_price', 'percentage_diff_worst']])
 	
 	# Create the chart with the percentage difference
 	gnosis_chart_data = gnosis_latest_data[['timestamp', 'percentage_diff']]   
