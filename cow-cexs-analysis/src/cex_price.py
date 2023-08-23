@@ -5,6 +5,9 @@ from binance import get_all_binance_pairs, query_binance
 from utils import percentage_diff
 
 
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
+
 def row_binance(sellTokenSymbol: str, buyTokenSymbol: str, timestamp: int, sellTokenQty:float, buyTokenQty:float):
 
 	"""function to be used on the cow trades dataframe. Takes values from sellTokenSymbol 
@@ -115,35 +118,35 @@ def binance_prices(input_df):
 	# Loop through each row of the dataframe.
 	for i, row in input_df.iterrows():
 	    # Retrieve the trades_id, timestamp, sell token symbol, and buy token symbol from the row.
-	    trade_id = row[2]
+	    trade_id = row['txHash']
 	    print('trade_id', trade_id)
-	    timestamp = row[5]
-	    sell_token_symbol = row[10]
-	    buy_token_symbol = row[13]
-	    sell_token_qty = row[14]
-	    buy_token_qty = row[15]
+	    timestamp = row['timestamp']
+	    sell_token_symbol = row['sellToken_symbol']
+	    buy_token_symbol = row['buyToken_symbol']
+	    sell_token_qty = row['sell_amount_right_decimal']
+	    buy_token_qty = row['buy_amount_right_decimal']
 	    timestamp_now = int(time.time())
 	    
 	    # Check first if timestamp is within 1000s of now to avoid panick. If it is old, then return 'old timestamp' 
 	    if abs(timestamp - timestamp_now) < 1000: 
 	        if trade_id in trades_analyzed:
-	        	input_df.iloc[i, 18] = 'repeat' 
-	        	input_df.iloc[i,19] = 'repeat'
+	        	input_df.at[i, 'binance_price'] = 'repeat' 
+	        	input_df.at[i,'worst_binance_price'] = 'repeat'
 	        	continue
 
 	        else: 
 	            # Use the pair_price_binance function to calculate the binance price and store it in the dataframe.
-	            input_df.iloc[i, 18], input_df.iloc[i,19] = row_binance(sell_token_symbol, buy_token_symbol, timestamp, sell_token_qty, buy_token_qty)
+	            input_df.at[i, 'binance_price'], input_df.at[i,'worst_binance_price'] = row_binance(sell_token_symbol, buy_token_symbol, timestamp, sell_token_qty, buy_token_qty)
 	            trades_analyzed.add(trade_id)
-	            print('i,17: ', input_df.iloc[i,18])
-	            print('i,18: ', input_df.iloc[i,19])
+	            print('i,17: ', input_df.at[i, 'binance_price'])
+	            print('i,18: ', input_df.at[i,'worst_binance_price'])
 
 	        print('input_df_1', input_df.iloc[i,:])
 
  
 	    else:
-	        input_df.iloc[i,17] = 'timeout'
-	        input_df.iloc[i,18] = 'timeout'
+	        input_df.at[i,'binance_price'] = 'timeout'
+	        input_df.at[i,'worst_binance_price'] = 'timeout'
 
 
 	print('input_df_1', input_df)   
@@ -157,7 +160,7 @@ def binance_prices(input_df):
 
 	# Define a percentage difference function to get percentage difference between binance price and cow price 
 
-	input_df['cow_price_no_fee'] = pd.to_numeric(input_df['cow_price'], errors='coerce')
+	input_df['cow_price_no_fee'] = pd.to_numeric(input_df['cow_price_no_fee'], errors='coerce')
 	input_df['binance_price'] = pd.to_numeric(input_df['binance_price'], errors='coerce')
 
 

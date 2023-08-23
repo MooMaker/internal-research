@@ -128,7 +128,7 @@ def get_trades_from_graph(subgraph_link: str):
     )
 
 
-    trades_df.write_csv("raw_data.csv")
+    #trades_df.write_csv("raw_data.csv")
     print("fetch trades from the graph complete")
     return trades_df
 
