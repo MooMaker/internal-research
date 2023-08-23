@@ -55,7 +55,7 @@ while(True):
 		print('No CoW Mainnet Chain trades in the last 15mins')
 
 		
-
+	'''
 	# Gnosis Chain CoW 
 	print('#########start gnosis################')
 	cow_gnosis_df_raw = get_trades_from_graph('https://api.thegraph.com/subgraphs/name/cowprotocol/cow-gc')
@@ -73,6 +73,7 @@ while(True):
 	elif cow_gnosis_df_raw.is_empty():
 		cow_gnosis_df = pl.DataFrame({})
 		print('No CoW Gnosis Chain trades in the last 15mins')
+	'''
 
 
 	#To do : return the right required data
@@ -87,8 +88,8 @@ while(True):
 	print('total cow trades so far: ', len(trades_analyzed))
 	print('total cow mainnet trades in the last 15mins: ', len(cow_mainnet_df_raw))
 	print('total number of mainnet trades obtained binance price for: ', len(cow_mainnet_df))
-	print('total cow gnosis trades in the last 15mins: ', len(cow_gnosis_df_raw))
-	print('total number of gnosis trades obtained binance prices for ', len(cow_gnosis_df))
+	#print('total cow gnosis trades in the last 15mins: ', len(cow_gnosis_df_raw))
+	#print('total number of gnosis trades obtained binance prices for ', len(cow_gnosis_df))
 
 
 	# time the loop to run after 14mins of end of previous run. Though if there was a way to actually time it in 15mins intervals

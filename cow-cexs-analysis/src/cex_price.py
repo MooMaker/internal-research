@@ -105,8 +105,8 @@ def binance_prices(input_df):
 	input_df = input_df.to_pandas()
 
 	# Initiate columns to be written in loop 
-	input_df['binance_price'] = 0.000
-	input_df['worst_binance_price'] = 0.00 
+	input_df['binance_price'] = 0.00000000000
+	input_df['worst_binance_price'] = 0.0000000000 
 	input_df = input_df.reset_index(drop=True)
 
 
@@ -127,23 +127,26 @@ def binance_prices(input_df):
 	    # Check first if timestamp is within 1000s of now to avoid panick. If it is old, then return 'old timestamp' 
 	    if abs(timestamp - timestamp_now) < 1000: 
 	        if trade_id in trades_analyzed:
-	        	input_df.iloc[i, 17] = 'repeat' 
-	        	input_df.iloc[i,18] = 'repeat'
+	        	input_df.iloc[i, 18] = 'repeat' 
+	        	input_df.iloc[i,19] = 'repeat'
 	        	continue
 
 	        else: 
 	            # Use the pair_price_binance function to calculate the binance price and store it in the dataframe.
-	            input_df.iloc[i, 17], input_df.iloc[i,18] = row_binance(sell_token_symbol, buy_token_symbol, timestamp, sell_token_qty, buy_token_qty)
+	            input_df.iloc[i, 18], input_df.iloc[i,19] = row_binance(sell_token_symbol, buy_token_symbol, timestamp, sell_token_qty, buy_token_qty)
 	            trades_analyzed.add(trade_id)
-	            print('i,17: ', input_df.iloc[i,17])
-	            print('i,18: ', input_df.iloc[i,18])
+	            print('i,17: ', input_df.iloc[i,18])
+	            print('i,18: ', input_df.iloc[i,19])
+
+	        print('input_df_1', input_df.iloc[i,:])
 
  
 	    else:
 	        input_df.iloc[i,17] = 'timeout'
 	        input_df.iloc[i,18] = 'timeout'
 
-	    
+
+	print('input_df_1', input_df)   
 
 	# Filter out trades that do not have a symbol in the subgraph
 	input_df = input_df[input_df['binance_price'] != 'repeat']
@@ -154,19 +157,23 @@ def binance_prices(input_df):
 
 	# Define a percentage difference function to get percentage difference between binance price and cow price 
 
+	input_df['cow_price_no_fee'] = pd.to_numeric(input_df['cow_price'], errors='coerce')
+	input_df['binance_price'] = pd.to_numeric(input_df['binance_price'], errors='coerce')
+
 
 	# Create a new column in the dataframe that stores the percentage difference between the sell amount and the sell amount on Binance.
 	input_df['percentage_diff'] = percentage_diff(
-	    input_df['cow_price'], 
+	    input_df['cow_price_no_fee'], 
 	    input_df['binance_price']
 	)
 
 
 	# Create a new column in the dataframe that stores the percentage difference between the sell amount and the sell amount on Binance.
 	input_df['percentage_diff_worst'] = percentage_diff(
-	    input_df['cow_price'], 
+	    input_df['cow_price_no_fee'], 
 	    input_df['worst_binance_price']
 	)
+
 
 	# Filter out rows that have a difference higher than 100% as its likely to be a different token alltogether
 	# an example is LIT which is Litentry on Binance but Timeless on COW. Unfortunately binance api does not allow

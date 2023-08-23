@@ -101,7 +101,12 @@ def get_trades_from_graph(subgraph_link: str):
         (pl.col("buyAmount") / 10 ** pl.col("buyToken_decimals")).alias(
             "buy_amount_right_decimal"
         ),
+        ((pl.col("sellAmount")-pl.col("feeAmount")) / 10 ** pl.col("sellToken_decimals")).alias(
+            "sell_amount_right_decimal_no_fee"
+        )
+
     )
+
 
     # Add a column with CoW price 
     trades_df = trades_df.with_columns(
@@ -112,7 +117,18 @@ def get_trades_from_graph(subgraph_link: str):
         ]
     )
 
-    #trades_df.write_csv("raw_data.csv")
+    
+    # Add a column with CoW price 
+    trades_df = trades_df.with_columns(
+        [
+            (
+                pl.col("sell_amount_right_decimal_no_fee") / pl.col("buy_amount_right_decimal")
+            ).alias("cow_price_no_fee")
+        ]
+    )
+
+
+    trades_df.write_csv("raw_data.csv")
     print("fetch trades from the graph complete")
     return trades_df
 
