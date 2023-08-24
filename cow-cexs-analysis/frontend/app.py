@@ -97,7 +97,7 @@ def run_app():
 
 	# Display the number of rows and counts of positive/negative percentage_diff
 	
-	gnosis_total, gnosis_cow_worse, gnosis_cow_better = get_macro_metric('../data/mainnet_cow_binance_data.csv')
+	gnosis_total, gnosis_cow_worse, gnosis_cow_better = get_macro_metric('../data/gnosis_cow_binance_data.csv')
 	st.write('Total number of rows:', total)
 	st.write('Number of rows with positive percentage_diff:', gnosis_cow_better)
 	st.write('Number of rows with negative percentage_diff:', gnosis_cow_worse)
