@@ -11,6 +11,11 @@ from queryportal.subgraphinterface import SubgraphInterface
 # Load subgraph endpoint for a given subgraph
 
 
+# Write mainnet DataFrame into data store
+data_folder_path = '../data/'
+raw_data_file_path = os.path.join(data_folder_path, 'raw_cow_data.csv')
+
+
 def get_trades_from_graph(subgraph_link: str):
 
     # Extract name of subgraph from link. (Last word)
@@ -64,7 +69,7 @@ def get_trades_from_graph(subgraph_link: str):
         graphql_query_fmt=True,
     )
 
-    print('test', type(trades_df))
+    #print('test', type(trades_df))
 
     if type(trades_df) == type(None): 
         print("No trades found. Exiting get_trades_from_graph function.")
@@ -129,6 +134,13 @@ def get_trades_from_graph(subgraph_link: str):
 
 
     #trades_df.write_csv("raw_data.csv")
+    if not os.path.isfile(raw_data_file_path):
+        trades_df.to_csv(raw_data_file_path, mode='w', header=True, index=False)
+    else:
+        # Append to the existing data file
+        trades_df.to_csv(raw_data_file_path, mode='a', header=False, index=False)
+
+
     print("fetch trades from the graph complete")
     return trades_df
 
