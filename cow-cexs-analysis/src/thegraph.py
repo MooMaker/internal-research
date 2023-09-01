@@ -1,7 +1,10 @@
 import requests
 import time
 import polars as pl
+import pandas as pd 
+import os 
 from queryportal.subgraphinterface import SubgraphInterface
+
 
 
 # Mainnet CoW subgraph: 'https://api.thegraph.com/subgraphs/name/cowprotocol/cow'
@@ -13,7 +16,6 @@ from queryportal.subgraphinterface import SubgraphInterface
 
 # Write mainnet DataFrame into data store
 data_folder_path = '../data/'
-raw_data_file_path = os.path.join(data_folder_path, 'raw_cow_data.csv')
 
 
 def get_trades_from_graph(subgraph_link: str):
@@ -132,13 +134,16 @@ def get_trades_from_graph(subgraph_link: str):
         ]
     )
 
+    raw_data_file_path = os.path.join(data_folder_path, f'{subgraph_name}_raw_cow_data.csv')
 
     #trades_df.write_csv("raw_data.csv")
     if not os.path.isfile(raw_data_file_path):
-        trades_df.to_csv(raw_data_file_path, mode='w', header=True, index=False)
+        trades_df.write_csv(raw_data_file_path, has_header=True)
+
     else:
-        # Append to the existing data file
-        trades_df.to_csv(raw_data_file_path, mode='a', header=False, index=False)
+
+        with open(raw_data_file_path, mode="ab") as f:
+            trades_df.write_csv(f, has_header=False)
 
 
     print("fetch trades from the graph complete")

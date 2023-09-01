@@ -53,7 +53,6 @@ while(True):
 	elif cow_mainnet_df_raw.is_empty():
 		cow_mainnet_df = pl.DataFrame({})
 		print('No CoW Mainnet Chain trades in the last 15mins')
-
 		
 	
 	# Gnosis Chain CoW 
