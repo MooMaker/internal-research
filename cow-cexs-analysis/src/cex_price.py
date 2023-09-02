@@ -52,6 +52,9 @@ def row_binance(sellTokenSymbol: str, buyTokenSymbol: str, timestamp: int, sellT
 		sell_token_price, sell_token_price_max, sell_token_price_min = query_binance('BTCUSDT', timestamp, sellTokenQty, False)
         
 	elif sell_pair in binance_pairs.values:
+		print('sell_pair', sell_pair)
+		print('timestamp', timestamp)
+		print('sellTokenQty', sellTokenQty)
 		sell_token_price, sell_token_price_max, sell_token_price_min = query_binance(sell_pair, timestamp, sellTokenQty, False)
         
 	else: 
