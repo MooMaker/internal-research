@@ -98,13 +98,14 @@ def run_app():
 	chart_data = mainnet_latest_data_graph[['timestamp', 'percentage_diff']]   
 	chart_data.set_index('timestamp', inplace=True)
 
+	'''
 	# Display the number of rows and counts of positive/negative percentage_diff
-	
 	total, cow_worse, cow_better = get_macro_metric('mainnet_cow_binance_data.csv')
 	st.write('Total number of rows:', total)
 	st.write('Number of rows with positive percentage_diff:', cow_better)
 	st.write('Number of rows with negative percentage_diff:', cow_worse)
-
+	'''
+	
 	# Create a button to download the data
 	st.download_button(
 		label='Download mainnet data',
@@ -132,7 +133,7 @@ def run_app():
 	gc_binance = count_by_day('../data/gnosis_cow_binance_data.csv')
 	gc_raw = count_by_day('../data/cow-gc_raw_cow_data.csv')
 	gc_positive = count_positive_percentage('../data/gnosis_cow_binance_data.csv')
-	gc_merged_series = pd.concat([raw, binance, positive], axis=1)
+	gc_merged_series = pd.concat([gc_raw, gc_binance, gc_positive], axis=1)
 	gc_merged_series.columns = [
 	    'Total CoW Trades',
 	    'Trades with Binance Tokens',
@@ -151,13 +152,14 @@ def run_app():
 	gnosis_chart_data = gnosis_latest_data_graph[['timestamp', 'percentage_diff']]   
 	gnosis_chart_data.set_index('timestamp', inplace=True)
 
+
+	'''
 	# Display the number of rows and counts of positive/negative percentage_diff
-	
 	gnosis_total, gnosis_cow_worse, gnosis_cow_better = get_macro_metric('../data/gnosis_cow_binance_data.csv')
 	st.write('Total number of rows:', total)
 	st.write('Number of rows with positive percentage_diff:', gnosis_cow_better)
 	st.write('Number of rows with negative percentage_diff:', gnosis_cow_worse)
-
+	'''
 
 	# Create a button to download the data
 	st.download_button(
