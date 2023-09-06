@@ -117,7 +117,7 @@ def query_binance(symbol: str, timestamp: int, qty: float, is_buy: bool):
     df1 = df.loc[df["timestamp"] == timestamp * 1000, "price"]
     if df1.empty:
         print("empty dataframe- no matching timestamp")
-        return "no matching timestamp"
+        return "no matching timestamp", "no matching timestamp", "no matching timestamp"
     price = float(df1.iloc[0])
     print(f"price for {symbol} is {price}")
 
@@ -156,6 +156,8 @@ def query_binance(symbol: str, timestamp: int, qty: float, is_buy: bool):
         price_final_min,
     )
     return price_final, price_final_max, price_final_min
+
+
 
 
 
